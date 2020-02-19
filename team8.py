@@ -7,8 +7,8 @@
 ####
 
 team_name = 'Salmonella' # Only 10 chars displayed.
-strategy_name = 'The name the team gives to this strategy'
-strategy_description = 'How does this strategy decide?'
+strategy_name = 'Probability'
+strategy_description = 'The strategy will calculate the probability of the opponent outputting either a c or b and then reacting to whichever has the highest probability.'
     
 def move(my_history, their_history, my_score, their_score):
     ''' Arguments accepted: my_history, their_history are strings.
@@ -25,6 +25,35 @@ def move(my_history, their_history, my_score, their_score):
     
     # Analyze my_history and their_history and/or my_score and their_score.
     # Decide whether to return 'c' or 'b'.
-    
-    return 'c'
+
+    import random
+    choices = [1, 2]
+    descision = random.choice(choices)
+    prob_c = 0
+    prob_b = 0
+    start = False
+
+    for move_my, move_their in zip(my_history, their_history):
+      if move_my == 'b' and move_their == 'c':
+        prob_b += 1
+      elif move_my == 'b' and move_their == 'b':
+        prob_c += 1
+      elif move_my == 'c' and move_their == 'b':
+        prob_b += 1
+      elif move_my == 'c' and move_their == 'c':
+        prob_b += 1
+        prob_c += 1
+      else:
+        start = True
+
+    if prob_c > prob_b: #if probability of c is higher, then it will randomly return c or b
+      if descision == 1:
+        return 'c'
+      else:
+        return 'b'
+    elif prob_c < prob_b: #if probability of b is higher, then it will return b
+      return 'b'
+    elif start == True: #it will always start with c
+      return 'c'
+      
 
