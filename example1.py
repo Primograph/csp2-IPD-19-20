@@ -34,7 +34,7 @@ def move(my_history, their_history, my_score, their_score):
         prob_c += 1
       elif move_my == 'c' and move_their == 'b':
         prob_b += 1
-      elif move _my == 'c' and move_their == 'c':
+      elif move_my == 'c' and move_their == 'c':
         prob_b += 1
         prob_c += 1
       else:

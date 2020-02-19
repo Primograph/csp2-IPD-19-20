@@ -30,5 +30,11 @@ def move(my_history, their_history, my_score, their_score):
     elif decision == 2: #betrays if two is chosen
       return 'b'
     else:
-      if their_history[-1] == 'b' and my_history[-1] == 'c':
+      if len(their_history) == 0 and len(my_history) == 0:
+        return 'c'
+      elif their_history[-1] == 'b' and my_history[-1] == 'c':
+        return 'b'
+      elif their_history[-1] == 'c' and my_history[-1] == 'c':
+        return 'c'
+      else:
         return 'b'
