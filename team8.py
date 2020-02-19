@@ -7,53 +7,38 @@
 ####
 
 team_name = 'Salmonella' # Only 10 chars displayed.
-strategy_name = 'Probability'
-strategy_description = 'The strategy will calculate the probability of the opponent outputting either a c or b and then reacting to whichever has the highest probability.'
+strategy_name = 'Experience-based'
+strategy_description = 'Betray five times, then decide to collude/betray based on the results of the past 5 rounds'
     
+start_five = 1
+
 def move(my_history, their_history, my_score, their_score):
-    ''' Arguments accepted: my_history, their_history are strings.
-    my_score, their_score are ints.
+    '''Make my move based on the history with this player.
     
-    Make my move.
-    Returns 'c' or 'b'. 
+    history: a string with one letter (c or b) per round that has been played with this opponent.
+    their_history: a string of the same length as history, possibly empty. 
+    The first round between these two players is my_history[0] and their_history[0]
+    The most recent round is my_history[-1] and their_history[-1]
+    
+    Returns 'c' or 'b' for collude or betray.
     '''
-
-    # my_history: a string with one letter (c or b) per round that has been played with this opponent.
-    # their_history: a string of the same length as history, possibly empty. 
-    # The first round between these two players is my_history[0] and their_history[0].
-    # The most recent round is my_history[-1] and their_history[-1].
+    global start_five
     
-    # Analyze my_history and their_history and/or my_score and their_score.
-    # Decide whether to return 'c' or 'b'.
-
-    import random
-    choices = [1, 2]
-    descision = random.choice(choices)
-    prob_c = 0
-    prob_b = 0
-    start = False
-
-    for move_my, move_their in zip(my_history, their_history):
-      if move_my == 'b' and move_their == 'c':
-        prob_b += 1
-      elif move_my == 'b' and move_their == 'b':
-        prob_c += 1
-      elif move_my == 'c' and move_their == 'b':
-        prob_b += 1
-      elif move_my == 'c' and move_their == 'c':
-        prob_b += 1
-        prob_c += 1
-      else:
-        start = True
-
-    if prob_c > prob_b: #if probability of c is higher, then it will randomly return c or b
-      if descision == 1:
-        return 'c'
-      else:
-        return 'b'
-    elif prob_c < prob_b: #if probability of b is higher, then it will return b
+    if start_five <= 5:
+      start_five += 1
       return 'b'
-    elif start == True: #it will always start with c
-      return 'c'
+    elif start_five > 5:
+      num_b = 0
+      num_c = 0
+
+      for letter in their_history[-5:]: # checks if there are nore c's or b's
+        if letter == 'c':
+          num_c += 1
+        elif letter == 'b':
+          num_b += 1
       
+      if num_c >= 4: # if there are more c's then it will betray. If there are more b's then it will collude.
+        return 'c'
+      elif num_b >= 2:
+        return 'b'
 
