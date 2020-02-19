@@ -7,8 +7,8 @@
 ####
 
 team_name = 'E1'
-strategy_name = 'Betray'
-strategy_description = 'Always betray.'
+strategy_name = 'Probability'
+strategy_description = 'Tries to calculate the probability of collusion and betrayl using the history. Depending on which has a higher chance, it will either collude or betray.'
     
 def move(my_history, their_history, my_score, their_score):
     '''Make my move based on the history with this player.
@@ -20,6 +20,32 @@ def move(my_history, their_history, my_score, their_score):
     
     Returns 'c' or 'b' for collude or betray.
     '''
+    import random
+    choices = [1, 2]
+    descision = random.choice(choices)
+    prob_c = 0
+    prob_b = 0
+    start = False
     
-    #This example player always betrays.      
-    return 'b'
+    for move_my, move_their in zip(my_history, their_history):
+      if move_my == 'b' and move_their == 'c':
+        prob_b += 1
+      elif move_my == 'b' and move_their == 'b':
+        prob_c += 1
+      elif move_my == 'c' and move_their == 'b':
+        prob_b += 1
+      elif move _my == 'c' and move_their == 'c':
+        prob_b += 1
+        prob_c += 1
+      else:
+        start = True
+    
+    if prob_c > prob_b: #if probability of c is higher, then it will randomly return c or b
+      if descision == 1:
+        return 'c'
+      else:
+        return 'b'
+    elif prob_c < prob_b: #if probability of b is higher, then it will return b
+      return 'b'
+    elif start == True: #it will always start with c
+      return 'c'

@@ -7,8 +7,8 @@
 ####
 
 team_name = 'E2'
-strategy_name = 'Alternate'
-strategy_description = 'Collude, then alternate.'
+strategy_name = 'Experience-based'
+strategy_description = 'Collude once, Betray four times, then decide to collude/betray based on the results of the past 5 rounds'
     
 def move(my_history, their_history, my_score, their_score):
     '''Make my move based on the history with this player.
@@ -20,9 +20,25 @@ def move(my_history, their_history, my_score, their_score):
     
     Returns 'c' or 'b' for collude or betray.
     '''
-    # This player colludes on even numbered rounds (first round is round #0).
-    if len(my_history)%2 == 0:
-        return 'c'
-    else:
-        return 'b'
+    start = True
+    count_4 = [1, 2, 3, 4]
+    num_b = 0
+    num_c = 0
+
+    if start == True: #always starts with c
+      start = False
+      return 'c'
     
+    for number in count_4: #always returns 5 b's right after
+      return 'b'
+    
+    for letter in their_history: # checks if there are nore c's or b's
+      if letter == 'c':
+        num_c += 1
+      elif letter == 'b':
+        num_b += 1
+    
+    if num_c > num_b: # if there are more c's then it will betray. If there are more b's then it will collude.
+      return 'b'
+    else:
+      return 'c'

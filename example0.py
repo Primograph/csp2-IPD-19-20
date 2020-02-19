@@ -1,4 +1,4 @@
-####
+#### so unless i misunderstood something everyhting should b fine
 # Each team's file must define four tokens:
 #     team_name: a string
 #     strategy_name: a string
@@ -6,9 +6,11 @@
 #     move: A function that returns 'c' or 'b'
 ####
 
+import random
+
 team_name = 'E0'
-strategy_name = 'Collude'
-strategy_description = 'Always collude.'
+strategy_name = 'Random'
+strategy_description = 'Randomly decides wether to collude, betray, or retaliate.'
     
 def move(my_history, their_history, my_score, their_score):
     '''Make my move based on the history with this player.
@@ -20,7 +22,13 @@ def move(my_history, their_history, my_score, their_score):
     
     Returns 'c' or 'b' for collude or betray.
     '''
-    
-    # This player always colludes.
-    return 'c'
-    
+
+    possibilities = [1, 2, 3]
+    decision = random.choice(possibilities)
+    if decision == 1: #colludes if 1 is chosen
+      return 'c'
+    elif decision == 2: #betrays if two is chosen
+      return 'b'
+    else:
+      if their_history[-1] == 'b' and my_history[-1] == 'c':
+        return 'b'
