@@ -8,8 +8,8 @@ Player 1 (P1): E1, Probability
         story. Depending on which has a higher chance, it will either collude or
          betray.
 Player 2 (P2): E2, Experience-based
-        Collude once, Betray four times, then decide to collude/betray based on 
-        the results of the past 5 rounds
+        Betray five times, then decide to collude/betray based on the results of
+         the past 5 rounds
 Player 3 (P3): E3, Collude but retaliate
         Collude first round. Collude, except in a round after getting 
         a severe punishment.
@@ -18,20 +18,20 @@ Section 1 - Player vs. Player
 --------------------------------------------------------------------------------
 Each column shows pts//round earned against each other player:
              P0     P1     P2     P3
-vs. P0 :      0   -166   -166   -215
-vs. P1 :   -207      0   -150     -2
-vs. P2 :   -238   -301      0   -206
-vs. P3 :    -70     -2   -196      0
-TOTAL  :   -515   -469   -512   -423
+vs. P0 :      0   -196   -127   -199
+vs. P1 :   -159      0    -77     -2
+vs. P2 :   -313   -374      0   -377
+vs. P3 :    -77     -2    -74      0
+TOTAL  :   -549   -572   -278   -578
 --------------------------------------------------------------------------------
 Section 2 - Leaderboard
 --------------------------------------------------------------------------------
 Average points per round:
 Team name (P#):  Score      with strategy name
-E3        (P3):       -106 points with Collude but retaliate                   
-E1        (P1):       -118 points with Probability                             
-E2        (P2):       -128 points with Experience-based                        
-E0        (P0):       -129 points with Random                                  
+E2        (P2):        -70 points with Experience-based                        
+E0        (P0):       -138 points with Random                                  
+E1        (P1):       -143 points with Probability                             
+E3        (P3):       -145 points with Collude but retaliate                   
 --------------------------------------------------------------------------------
 --------------------------------------------------------------------------------
 example0--------------------------------------------------------------------------------
@@ -67,7 +67,7 @@ def move(my_history, their_history, my_score, their_score):
     elif decision == 2: #betrays if two is chosen
       return 'b'
     else:
-      if len(their_history) == 0 and len(my_history) == 0:
+      if len(my_history) == 0:
         return 'c'
       elif their_history[-1] == 'b' and my_history[-1] == 'c':
         return 'b'
@@ -88,7 +88,7 @@ example1------------------------------------------------------------------------
 team_name = 'E1'
 strategy_name = 'Probability'
 strategy_description = 'Tries to calculate the probability of collusion and betrayl using the history. Depending on which has a higher chance, it will either collude or betray.'
-    
+
 def move(my_history, their_history, my_score, their_score):
     '''Make my move based on the history with this player.
     
@@ -139,7 +139,7 @@ example2------------------------------------------------------------------------
 
 team_name = 'E2'
 strategy_name = 'Experience-based'
-strategy_description = 'Collude once, Betray four times, then decide to collude/betray based on the results of the past 5 rounds'
+strategy_description = 'Betray five times, then decide to collude/betray based on the results of the past 5 rounds'
 
 start_five = 1
 
@@ -155,10 +155,7 @@ def move(my_history, their_history, my_score, their_score):
     '''
     global start_five
     
-    if start_five == 1:
-      start_five += 1
-      return 'c'
-    elif start_five > 1 and start_five <= 5:
+    if start_five <= 5:
       start_five += 1
       return 'b'
     elif start_five > 5:
@@ -171,7 +168,7 @@ def move(my_history, their_history, my_score, their_score):
         elif letter == 'b':
           num_b += 1
       
-      if num_c >= 3: # if there are more c's then it will betray. If there are more b's then it will collude.
+      if num_c >= 4: # if there are more c's then it will betray. If there are more b's then it will collude.
         return 'c'
       else:
         return 'b'
@@ -209,67 +206,52 @@ def move(my_history, their_history, my_score, their_score):
         return 'c' # otherwise collude.--------------------------------------------------------------------------------
 Section 3 - Game Data for Team E0
 --------------------------------------------------------------------------------
--207 pt//round: E0(P0) "Random"
--166 pt//ound: E1(P1) "Probability"
-bBbBbCCCCBcbbBbBccbcbcbccbbbbBbBbCCBcbbCCBbCBcbbBcccbbbbBbCCBcbbCCCBbCCCCBccbccb
- cbcbCCCCcBbbcbcBBbBbBbBBbbbbcbcbCCcBbbCCcbCcBbbcBBBbbbbcbCCcBbbCCCcbCCCCcBBbBBb
+-159 pt//round: E0(P0) "Random"
+-196 pt//ound: E1(P1) "Probability"
+cBbBbCBbBbCBcbbBbCBbBbBccbbccccbbbbcbbBbCCCBbCCCBbBbBbBbBcbbBbBbBbCBbCCBcbbBcbcc
+ cbcbCcbcbCcBbbcbCcbcbcBBbbBBBBbbbbBbbcbCCCcbCCCcbcbcbcbcBbbcbcbcbCcbCCcBbbcBbBB
 
-cccbbbbcbbcbbBcbcbbBcbbBbBcbbBbBbBcbcbccbbccbbbCCCCCCCCCBccbcbbbBbBbCBbCBbBbBbCB
-BBBbbbbBbbBbbcBbBbbcBbbcbcBbbcbcbcBbBbBBbbBBbbbCCCCCCCCCcBBbBbbbcbcbCcbCcbcbcbCc
-
-bBccbcccbccbbbcb
-bcBBbBBBbBBbbbBb
+bbbCCCCCBcbbBbBbBbCBbBbBccbbbCCCCCCCCCCCCBcbbBccbbcbbCCBbBbCBccbcbcbbbBbCBbBccbb
+bbbCCCCCcBbbcbcbcbCcbcbcBBbbbCCCCCCCCCCCCcBbbcBBbbBbbCCcbcbCcBBbBbBbbbcbCcbcBBbb
 
 --------------------------------------------------------------------------------
--238 pt//round: E0(P0) "Random"
--166 pt//ound: E2(P2) "Experience-based"
-CbbbbbbbcbbccBbcCBcBBbbbbbbbbbcbbbcbbcbbbbcbbbbbbcbcbbbcbbcbccCCCBBBccbbbbcbcbbb
-CbbbbbbbBbbBBcbBCcBccbbbbbbbbbBbbbBbbBbbbbBbbbbbbBbBbbbBbbBbBBCCCcccBBbbbbBbBbbb
+-313 pt//round: E0(P0) "Random"
+-127 pt//ound: E2(P2) "Experience-based"
+ccbbbbcbbbcbcbbbbbbccbbbcbbbcbcbcccCCCCCBBccbbbcbbbbbbbcbcbbbccbbccbccCBbbbbbbcc
+BBbbbbBbbbBbBbbbbbbBBbbbBbbbBbBbBBBCCCCCccBBbbbBbbbbbbbBbBbbbBBbbBBbBBCcbbbbbbBB
 
-bbcbcbbcbccBBbcbbbbbcbcbcCCCCCCBBBbbcbccBCCBBbcbbcbccBCCBBbbcbbcbbbbccbcBCBcBbbb
-bbBbBbbBbBBccbBbbbbbBbBbBCCCCCCcccbbBbBBcCCccbBbbBbBBcCCccbbBbbBbbbbBBbBcCcBcbbb
-
-cbbbcbcbbccBbcCBcBBccCBCCCBCBBbcbbbbcbcb
-BbbbBbBbbBBcbBCcBccBBCcCCCcCccbBbbbbBbBb
+cbbbcbbbbcbbbcbbbbbbccbcbcbbccbcbbccccCBBbbbbbcccbbbcbcbbbbbbccbbcbbcbcc
+BbbbBbbbbBbbbBbbbbbbBBbBbBbbBBbBbbBBBBCccbbbbbBBBbbbBbBbbbbbbBBbbBbbBbBB
 
 --------------------------------------------------------------------------------
--70 pt//round: E0(P0) "Random"
--215 pt//ound: E3(P3) "Collude but retaliate"
-CCCBbCCCBbBbBbCCBcCCCCBbBbBcCBbCBcBbCBbBbBbBbBbCCCCCCBcBbCCBbBbBcCCCCBbCCCCBbCBc
-CCCcbCCCcbcbcbCCcBCCCCcbcbcBCcbCcBcbCcbcbcbcbcbCCCCCCcBcbCCcbcbcBCCCCcbCCCCcbCcB
+-77 pt//round: E0(P0) "Random"
+-199 pt//ound: E3(P3) "Collude but retaliate"
+BbCCCCBbCCBcBbBbBbCCCCBbBbBbBcBbBbBcBbBcCCCCCCBcBbCCBcBcBbCBcBcBbBbCCBbBbBbCBcBb
+cbCCCCcbCCcBcbcbcbCCCCcbcbcbcBcbcbcBcbcBCCCCCCcBcbCCcBcBcbCcBcBcbcbCCcbcbcbCcBcb
 
-BbBbBcBbBcBbBbCCCCBbBbBcBbCCCCCCCCBbCCCBbBbBbCCCCCBcCCCBbBbBcBbBbCCBbBbBbCBbBbBb
-cbcbcBcbcBcbcbCCCCcbcbcBcbCCCCCCCCcbCCCcbcbcbCCCCCcBCCCcbcbcBcbcbCCcbcbcbCcbcbcb
-
-BbBcBbCCCBbBcBcBcC
-cbcBcbCCCcbcBcBcBC
+CBbBbCCBcBcBcBbBbBbBbBcCCCCCCCCCCCCCCBbCCCCCCCCBbCBc
+CcbcbCCcBcBcBcbcbcbcbcBCCCCCCCCCCCCCCcbCCCCCCCCcbCcB
 
 --------------------------------------------------------------------------------
 --------------------------------------------------------------------------------
 Section 3 - Game Data for Team E1
 --------------------------------------------------------------------------------
--166 pt//round: E1(P1) "Probability"
--207 pt//ound: E0(P0) "Random"
- cbcbCCCCcBbbcbcBBbBbBbBBbbbbcbcbCCcBbbCCcbCcBbbcBBBbbbbcbCCcBbbCCCcbCCCCcBBbBBb
-bBbBbCCCCBcbbBbBccbcbcbccbbbbBbBbCCBcbbCCBbCBcbbBcccbbbbBbCCBcbbCCCBbCCCCBccbccb
+-196 pt//round: E1(P1) "Probability"
+-159 pt//ound: E0(P0) "Random"
+ cbcbCcbcbCcBbbcbCcbcbcBBbbBBBBbbbbBbbcbCCCcbCCCcbcbcbcbcBbbcbcbcbCcbCCcBbbcBbBB
+cBbBbCBbBbCBcbbBbCBbBbBccbbccccbbbbcbbBbCCCBbCCCBbBbBbBbBcbbBbBbBbCBbCCBcbbBcbcc
 
-BBBbbbbBbbBbbcBbBbbcBbbcbcBbbcbcbcBbBbBBbbBBbbbCCCCCCCCCcBBbBbbbcbcbCcbCcbcbcbCc
-cccbbbbcbbcbbBcbcbbBcbbBbBcbbBbBbBcbcbccbbccbbbCCCCCCCCCBccbcbbbBbBbCBbCBbBbBbCB
-
-bcBBbBBBbBBbbbBb
-bBccbcccbccbbbcb
+bbbCCCCCcBbbcbcbcbCcbcbcBBbbbCCCCCCCCCCCCcBbbcBBbbBbbCCcbcbCcBBbBbBbbbcbCcbcBBbb
+bbbCCCCCBcbbBbBbBbCBbBbBccbbbCCCCCCCCCCCCBcbbBccbbcbbCCBbBbCBccbcbcbbbBbCBbBccbb
 
 --------------------------------------------------------------------------------
--301 pt//round: E1(P1) "Probability"
--150 pt//ound: E2(P2) "Experience-based"
- cbcbcBbbcbcbcBbbcbcbcBbbcbcbcBbbcbcbcBbbcbcbcBbbcbcbcBbbcbcbcBbbcbcbcBbbcbcbcBb
-bBbBbBcbbBbBbBcbbBbBbBcbbBbBbBcbbBbBbBcbbBbBbBcbbBbBbBcbbBbBbBcbbBbBbBcbbBbBbBcb
+-374 pt//round: E1(P1) "Probability"
+-77 pt//ound: E2(P2) "Experience-based"
+ cbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbc
+bBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbB
 
-bcbcbcBbbcbcbcBbbcbcbcBbbcbcbcBbbcbcbcBbbcbcbcBbbcbcbcBbbcbcbcBbbcbcbcBbbcbcbcBb
-bBbBbBcbbBbBbBcbbBbBbBcbbBbBbBcbbBbBbBcbbBbBbBcbbBbBbBcbbBbBbBcbbBbBbBcbbBbBbBcb
-
-bcbcbcBbbcbcbcBbbcb
-bBbBbBcbbBbBbBcbbBb
+bcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcb
+bBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBb
 
 --------------------------------------------------------------------------------
 -2 pt//round: E1(P1) "Probability"
@@ -280,62 +262,50 @@ cCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCC
 CCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCC
 CCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCC
 
-CCCCCCCCCCCCCCCCCCCCCCCCCCCC
-CCCCCCCCCCCCCCCCCCCCCCCCCCCC
+CCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCC
+CCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCC
 
 --------------------------------------------------------------------------------
 --------------------------------------------------------------------------------
 Section 3 - Game Data for Team E2
 --------------------------------------------------------------------------------
--166 pt//round: E2(P2) "Experience-based"
--238 pt//ound: E0(P0) "Random"
-CbbbbbbbBbbBBcbBCcBccbbbbbbbbbBbbbBbbBbbbbBbbbbbbBbBbbbBbbBbBBCCCcccBBbbbbBbBbbb
-CbbbbbbbcbbccBbcCBcBBbbbbbbbbbcbbbcbbcbbbbcbbbbbbcbcbbbcbbcbccCCCBBBccbbbbcbcbbb
+-127 pt//round: E2(P2) "Experience-based"
+-313 pt//ound: E0(P0) "Random"
+BBbbbbBbbbBbBbbbbbbBBbbbBbbbBbBbBBBCCCCCccBBbbbBbbbbbbbBbBbbbBBbbBBbBBCcbbbbbbBB
+ccbbbbcbbbcbcbbbbbbccbbbcbbbcbcbcccCCCCCBBccbbbcbbbbbbbcbcbbbccbbccbccCBbbbbbbcc
 
-bbBbBbbBbBBccbBbbbbbBbBbBCCCCCCcccbbBbBBcCCccbBbbBbBBcCCccbbBbbBbbbbBBbBcCcBcbbb
-bbcbcbbcbccBBbcbbbbbcbcbcCCCCCCBBBbbcbccBCCBBbcbbcbccBCCBBbbcbbcbbbbccbcBCBcBbbb
-
-BbbbBbBbbBBcbBCcBccBBCcCCCcCccbBbbbbBbBb
-cbbbcbcbbccBbcCBcBBccCBCCCBCBBbcbbbbcbcb
+BbbbBbbbbBbbbBbbbbbbBBbBbBbbBBbBbbBBBBCccbbbbbBBBbbbBbBbbbbbbBBbbBbbBbBB
+cbbbcbbbbcbbbcbbbbbbccbcbcbbccbcbbccccCBBbbbbbcccbbbcbcbbbbbbccbbcbbcbcc
 
 --------------------------------------------------------------------------------
--150 pt//round: E2(P2) "Experience-based"
--301 pt//ound: E1(P1) "Probability"
-bBbBbBcbbBbBbBcbbBbBbBcbbBbBbBcbbBbBbBcbbBbBbBcbbBbBbBcbbBbBbBcbbBbBbBcbbBbBbBcb
- cbcbcBbbcbcbcBbbcbcbcBbbcbcbcBbbcbcbcBbbcbcbcBbbcbcbcBbbcbcbcBbbcbcbcBbbcbcbcBb
+-77 pt//round: E2(P2) "Experience-based"
+-374 pt//ound: E1(P1) "Probability"
+bBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbB
+ cbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbc
 
-bBbBbBcbbBbBbBcbbBbBbBcbbBbBbBcbbBbBbBcbbBbBbBcbbBbBbBcbbBbBbBcbbBbBbBcbbBbBbBcb
-bcbcbcBbbcbcbcBbbcbcbcBbbcbcbcBbbcbcbcBbbcbcbcBbbcbcbcBbbcbcbcBbbcbcbcBbbcbcbcBb
-
-bBbBbBcbbBbBbBcbbBb
-bcbcbcBbbcbcbcBbbcb
+bBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBb
+bcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcb
 
 --------------------------------------------------------------------------------
--196 pt//round: E2(P2) "Experience-based"
--206 pt//ound: E3(P3) "Collude but retaliate"
-BbBbBcBcBcBcBcBcBcBcBcBcBcBcBcBcBcBcBcBcBcBcBcBcBcBcBcBcBcBcBcBcBcBcBcBcBcBcBcBc
-cbcbcBcBcBcBcBcBcBcBcBcBcBcBcBcBcBcBcBcBcBcBcBcBcBcBcBcBcBcBcBcBcBcBcBcBcBcBcBcB
+-74 pt//round: E2(P2) "Experience-based"
+-377 pt//ound: E3(P3) "Collude but retaliate"
+BbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBb
+cbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcb
 
-BcBcBcBcBcBcBcBcBcBcBcBcBcBcBcBcBcBcBcBcBcBcBcBcBcBcBcBcBcBcBcBcBcBcBcBcBcBcBcBc
-cBcBcBcBcBcBcBcBcBcBcBcBcBcBcBcBcBcBcBcBcBcBcBcBcBcBcBcBcBcBcBcBcBcBcBcBcBcBcBcB
-
-BcBcBcBcBcBcBcBcBcBcBcBcBcBcB
-cBcBcBcBcBcBcBcBcBcBcBcBcBcBc
+BbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbB
+cbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbc
 
 --------------------------------------------------------------------------------
 --------------------------------------------------------------------------------
 Section 3 - Game Data for Team E3
 --------------------------------------------------------------------------------
--215 pt//round: E3(P3) "Collude but retaliate"
--70 pt//ound: E0(P0) "Random"
-CCCcbCCCcbcbcbCCcBCCCCcbcbcBCcbCcBcbCcbcbcbcbcbCCCCCCcBcbCCcbcbcBCCCCcbCCCCcbCcB
-CCCBbCCCBbBbBbCCBcCCCCBbBbBcCBbCBcBbCBbBbBbBbBbCCCCCCBcBbCCBbBbBcCCCCBbCCCCBbCBc
+-199 pt//round: E3(P3) "Collude but retaliate"
+-77 pt//ound: E0(P0) "Random"
+cbCCCCcbCCcBcbcbcbCCCCcbcbcbcBcbcbcBcbcBCCCCCCcBcbCCcBcBcbCcBcBcbcbCCcbcbcbCcBcb
+BbCCCCBbCCBcBbBbBbCCCCBbBbBbBcBbBbBcBbBcCCCCCCBcBbCCBcBcBbCBcBcBbBbCCBbBbBbCBcBb
 
-cbcbcBcbcBcbcbCCCCcbcbcBcbCCCCCCCCcbCCCcbcbcbCCCCCcBCCCcbcbcBcbcbCCcbcbcbCcbcbcb
-BbBbBcBbBcBbBbCCCCBbBbBcBbCCCCCCCCBbCCCBbBbBbCCCCCBcCCCBbBbBcBbBbCCBbBbBbCBbBbBb
-
-cbcBcbCCCcbcBcBcBC
-BbBcBbCCCBbBcBcBcC
+CcbcbCCcBcBcBcbcbcbcbcBCCCCCCCCCCCCCCcbCCCCCCCCcbCcB
+CBbBbCCBcBcBcBbBbBbBbBcCCCCCCCCCCCCCCBbCCCCCCCCBbCBc
 
 --------------------------------------------------------------------------------
 -2 pt//round: E3(P3) "Collude but retaliate"
@@ -346,19 +316,16 @@ cCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCC
 CCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCC
 CCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCC
 
-CCCCCCCCCCCCCCCCCCCCCCCCCCCC
-CCCCCCCCCCCCCCCCCCCCCCCCCCCC
+CCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCC
+CCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCC
 
 --------------------------------------------------------------------------------
--206 pt//round: E3(P3) "Collude but retaliate"
--196 pt//ound: E2(P2) "Experience-based"
-cbcbcBcBcBcBcBcBcBcBcBcBcBcBcBcBcBcBcBcBcBcBcBcBcBcBcBcBcBcBcBcBcBcBcBcBcBcBcBcB
-BbBbBcBcBcBcBcBcBcBcBcBcBcBcBcBcBcBcBcBcBcBcBcBcBcBcBcBcBcBcBcBcBcBcBcBcBcBcBcBc
+-377 pt//round: E3(P3) "Collude but retaliate"
+-74 pt//ound: E2(P2) "Experience-based"
+cbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcb
+BbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBb
 
-cBcBcBcBcBcBcBcBcBcBcBcBcBcBcBcBcBcBcBcBcBcBcBcBcBcBcBcBcBcBcBcBcBcBcBcBcBcBcBcB
-BcBcBcBcBcBcBcBcBcBcBcBcBcBcBcBcBcBcBcBcBcBcBcBcBcBcBcBcBcBcBcBcBcBcBcBcBcBcBcBc
-
-cBcBcBcBcBcBcBcBcBcBcBcBcBcBc
-BcBcBcBcBcBcBcBcBcBcBcBcBcBcB
+cbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbc
+BbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbBbB
 
 --------------------------------------------------------------------------------

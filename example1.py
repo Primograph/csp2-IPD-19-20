@@ -9,7 +9,7 @@
 team_name = 'E1'
 strategy_name = 'Probability'
 strategy_description = 'Tries to calculate the probability of collusion and betrayl using the history. Depending on which has a higher chance, it will either collude or betray.'
-    
+
 def move(my_history, their_history, my_score, their_score):
     '''Make my move based on the history with this player.
     

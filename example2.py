@@ -8,7 +8,7 @@
 
 team_name = 'E2'
 strategy_name = 'Experience-based'
-strategy_description = 'Collude once, Betray four times, then decide to collude/betray based on the results of the past 5 rounds'
+strategy_description = 'Betray five times, then decide to collude/betray based on the results of the past 5 rounds'
 
 start_five = 1
 
@@ -24,10 +24,7 @@ def move(my_history, their_history, my_score, their_score):
     '''
     global start_five
     
-    if start_five == 1:
-      start_five += 1
-      return 'c'
-    elif start_five > 1 and start_five <= 5:
+    if start_five <= 5:
       start_five += 1
       return 'b'
     elif start_five > 5:
@@ -40,7 +37,7 @@ def move(my_history, their_history, my_score, their_score):
         elif letter == 'b':
           num_b += 1
       
-      if num_c >= 3: # if there are more c's then it will betray. If there are more b's then it will collude.
+      if num_c >= 4: # if there are more c's then it will betray. If there are more b's then it will collude.
         return 'c'
       else:
         return 'b'
