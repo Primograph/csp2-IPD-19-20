@@ -39,5 +39,5 @@ def move(my_history, their_history, my_score, their_score):
       
       if num_c >= 4: # if there are more c's then it will betray. If there are more b's then it will collude.
         return 'c'
-      else:
+      elif num_b >= 2:
         return 'b'
